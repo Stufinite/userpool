@@ -67,8 +67,8 @@ def forgot_password(request):
         try:
             user = User.objects.get(email=request.POST.get('email'))
             if user.first_name == request.POST.get('first_name') and user.last_name == request.POST.get('last_name'):
+                print(user.email)
                 from django.core.mail import send_mail
-
                 send_mail(
                     '密碼變更＠選課小幫手',
                     '這裡是你的新密碼',
@@ -76,11 +76,10 @@ def forgot_password(request):
                     [user.email],
                     fail_silently=False,
                 )
-
                 return render(request, 'success.html', {'title': '密碼已寄送', 'context': '前往信箱取得新的密碼'})
-        except User.DoesNotExist:
+        finally:
             form = UserForgotPasswordForm()
-        return render(request, 'forgot.html', {'form': form, 'type_error': True})
+            return render(request, 'forgot.html', {'form': form, 'type_error': True})
     else:
         form = UserForgotPasswordForm()
         return render(request, 'forgot.html', {'form': form})
