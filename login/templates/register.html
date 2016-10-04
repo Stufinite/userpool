@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}登入{% endblock %}
+{% block app_name %}登入{% endblock %}
+
+{% load static %}
+{% block stylesheet %}
+<link rel='stylesheet' href='{% static "login/css/login.css" %}'>
+{% endblock %}
+
+{% block content %}
+<div class='stufinite-app-container'>
+  <div class='stufinite-app-content'>
+      <section class="stufinite-form-container">
+        <h1>註冊小幫手</h1>
+        <form action="{% url 'register' %}" method="post">
+          {% csrf_token %}
+          {% if type_error %}
+          <span class="type-error">輸入格式錯誤或帳號不存在</span>
+          {% endif %}
+
+          {{ form.as_p }}
+
+          <button type="submit" name="button">註冊</button>
+        </form>
+        <a href="/accounts/login">已經有帳號了，點此登入</a>
+      </section>
+</div>
+{% endblock %}

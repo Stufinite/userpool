@@ -1,0 +1,32 @@
+.stufinite-profile-container {
+    left: calc(50% - 49%);
+    display: inline-block;
+    margin-top: 8px;
+    width: calc(98% - 200px);
+    text-align: left;
+}
+
+.stufinite-profile-container h1 {
+    text-align: left;
+}
+
+.stufinite-profile-menu {
+    list-style: none;
+}
+
+.stufinite-profile-menu-title {
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-align: left;
+    font-weight: lighter;
+}
+
+.stufinite-profile-menu-item {
+    padding: 4px;
+    padding: 6px 8px;
+    min-height: 34px;
+    width: 100%;
+    color: #333;
+    font-size: 14px;
+}

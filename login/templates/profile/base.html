@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}帳號{% endblock %}
+{% block app_name %}帳號{% endblock %}
+
+{% load static %}
+{% block stylesheet %}
+<link rel='stylesheet' href='{% static "login/css/login.css" %}'>
+<link rel='stylesheet' href='{% static "login/css/profile.css" %}'>
+{% endblock %}
+
+{% block content %}
+<div class='stufinite-app-container'>
+  <div class='stufinite-app-content'>
+      <section class='stufinite-app-sidebar-container'>
+          <ul class='stufinite-app-sidebar'>
+              <li><i class="fa fa-user"></i><a href="/accounts/profile/">個人資訊</a></li>
+              <li><i class='fa fa-search'></i><a href="/accounts/profile/password">修改密碼</a></li>
+              <li><i class='fa fa-picture-o'></i><a href="/accounts/profile/edit">修改資料</a></li>
+          </ul>
+      </section>
+      {% block profile_content %}
+      {% endblock %}
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}登入{% endblock %}
+{% block app_name %}登入{% endblock %}
+
+{% load static %}
+{% block stylesheet %}
+<link rel='stylesheet' href='{% static "login/css/login.css" %}'>
+{% endblock %}
+
+{% block content %}
+<div class='stufinite-app-container'>
+  <div class='stufinite-app-content'>
+      <section class="stufinite-form-container">
+        <h1>你已經登出了</h1>
+        <div><a href="http://stufinite.faith">點此回到小幫手首頁</a></div>
+      </section>
+</div>
+{% endblock %}

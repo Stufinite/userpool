@@ -1,0 +1,28 @@
+{% extends 'profile/base.html' %}
+
+{% block profile_content %}
+<section class="stufinite-profile-container stufinite-form-container">
+  <h1>個人資訊</h1>
+  <ul class='stufinite-profile-menu'>
+    <li class='stufinite-profile-menu-item'>
+      <span class='stufinite-profile-menu-title'>姓名</span>
+      {{ request.user.first_name }} {{ request.user.last_name }}
+    </li>
+
+    <li class='stufinite-profile-menu-item'>
+      <span class='stufinite-profile-menu-title'>電子郵件</span>
+      {{ request.user.email }}
+    </li>
+
+    <li class='stufinite-profile-menu-item'>
+      <span class='stufinite-profile-menu-title'>校園電子郵件</span>
+      {{ userprofile.school_email }}
+    </li>
+
+    <li class='stufinite-profile-menu-item'>
+      <span class='stufinite-profile-menu-title'>系級</span>
+      {{ userprofile.major }} {{ userprofile.grade }} 年級
+    </li>
+  </ul>
+</section>
+{% endblock %}
