@@ -80,10 +80,10 @@ def forgot_password(request):
                 return render(request, 'success.html', {'title': '密碼已寄送', 'context': '前往信箱取得新的密碼'})
         except User.DoesNotExist:
             form = UserForgotPasswordForm()
-            return render(request, 'forgot.html', {'form': form, 'type_error': True})
+        return render(request, 'forgot.html', {'form': form, 'type_error': True})
     else:
         form = UserForgotPasswordForm()
-    return render(request, 'forgot.html', {'form': form})
+        return render(request, 'forgot.html', {'form': form})
 
 
 @login_required
