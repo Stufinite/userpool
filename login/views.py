@@ -73,7 +73,7 @@ def forgot_password(request):
                     '密碼變更＠選課小幫手',
                     '這裡是你的新密碼',
                     'noreply@stufinite.faith',
-                    ['cjhwong@gmail.com'],
+                    [user.email],
                     fail_silently=False,
                 )
 
