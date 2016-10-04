@@ -63,6 +63,10 @@ def forgot_password(request):
     """
     View that send a new password to a registered email
     """
+    if not request.user.is_anonymous:
+        next_page = 'http://' + DOMAIN
+        return HttpResponseRedirect(next_page)
+
     if request.method == 'POST':
         try:
             user = User.objects.get(email=request.POST.get('email'))
