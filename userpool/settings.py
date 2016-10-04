@@ -61,7 +61,7 @@ ROOT_URLCONF = 'userpool.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates',],
+        'DIRS': ['templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,13 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'userpool.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-from .settings_database import DATABASE_SETTINGS
-DATABASES = DATABASE_SETTINGS['sqlite']
 
 
 # Password validation
@@ -121,32 +114,31 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-# STATIC_ROOT = BASE_DIR + '/static'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-# Settings for Email service
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#
-# # Host for sending e-mail.
-EMAIL_HOST = 'localost'
-#
-# # Port for sending e-mail.
-EMAIL_PORT = 1025
-#
-# # Optional SMTP authentication information for EMAIL_HOST.
-# EMAIL_HOST_USER = ''
-# EMAIL_HOST_PASSWORD = ''
-# EMAIL_USE_TLS = True
+# Settings for out specific uses
 
-# Settings for security (HTTPS)
+# Database
+# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+
+from .settings_database import DATABASE_SETTINGS
+DATABASES = DATABASE_SETTINGS['sqlite']
+
+# Email
+# https://docs.djangoproject.com/en/1.10/ref/settings/#email
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
+
+# HTTPS
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_SSL_REDIRECT = True
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
 
-# SESSION_COOKIE_DOMAIN = '.stufinite.faith'
+SESSION_COOKIE_DOMAIN = '.stufinite.faith'
