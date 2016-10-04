@@ -1,6 +1,7 @@
 # Project stuff
 userpool/settings_database.py
 uwsgi.deploy.ini
+db.sqlite3
 
 # virtualenv
 venv
