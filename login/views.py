@@ -120,19 +120,20 @@ def profile_edit(request):
     """
     View that allow user to edit profile
     """
+    user = request.user
+
     if request.method == 'POST':
-        user = request.user
-        form = UserModifyForm(user=user, data=request.POST, initial={
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'school_email': user.userprofile.school_email,
-            'grade': user.userprofile.grade,
-            'major': user.userprofile.major
-        })
+        form = UserModifyForm(user=user, data=request.POST)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
             return render(request, 'profile/success.html')
 
-    form = UserModifyForm(request.user)
+    form = UserModifyForm(user, initial={
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'email': user.email,
+        'grade': user.userprofile.grade,
+        'major': user.userprofile.major
+    })
     return render(request, 'profile/edit.html', {'form': form})
