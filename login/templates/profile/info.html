@@ -23,6 +23,15 @@
       <span class='stufinite-profile-menu-title'>系級</span>
       {{ userprofile.major }} {{ userprofile.grade }} 年級
     </li>
+
+    <li class='stufinite-profile-menu-item'>
+      <span class='stufinite-profile-menu-title'>認證</span>
+       {% if userprofile.verified %}
+       已認證
+       {% else %}
+       尚未完成認證
+       {% endif %}
+    </li>
   </ul>
 </section>
 {% endblock %}
