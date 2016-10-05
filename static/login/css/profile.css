@@ -8,6 +8,8 @@
 
 .stufinite-profile-container h1 {
     text-align: left;
+    padding: 0;
+    margin: 0;
 }
 
 .stufinite-profile-menu {

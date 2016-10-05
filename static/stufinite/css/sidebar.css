@@ -1,15 +1,12 @@
 .stufinite-app-sidebar-container {
   display: inline-block;
   width: 200px;
-  height: 100%;
   background-color: white;
   vertical-align: top;
 }
 .stufinite-app-sidebar {
   margin: 0;
   padding: 24px 16px 24px 16px;
-  min-height: 640px;
-  height: 100%;
   box-shadow: 0px 0px 3px grey;
   list-style: none;
 }
@@ -17,7 +14,9 @@
   padding-left: 8px;
   height: 48px;
   color: #403F3F;
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: lighter;
+  letter-spacing: 2px;
   line-height: 48px;
 }
 .stufinite-app-sidebar li i {
@@ -25,4 +24,8 @@
   width: 28px;
   text-align: center;
   font-size: 24px;
+}
+.stufinite-app-sidebar li a {
+  color: #403F3F;
+  text-decoration: none;
 }
