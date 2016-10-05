@@ -23,22 +23,24 @@ def login(request):
 
     response = auth_views.login(request, template_name='login.html')
 
-    if request.user.is_anonymous or request.GET.get('next') != '':
+    if request.user.is_anonymous:
         # The default response of django.contrib.auth.views.login
         return response
     else:
         # Custom cross-site next_page handler
-        next_page_element = request.GET.get('next-page', '').split('-')
-        if len(next_page_element) < 3:
-            next_page = 'http://' + DOMAIN
-        elif next_page_element[1] + '.' + next_page_element[2] != DOMAIN:
-            next_page = 'http://' + DOMAIN
-        elif next_page_element[1] + '.' + next_page_element[2] == DOMAIN:
-            next_page = 'http://' + next_page_element[0] + '.' + DOMAIN
+        if request.GET.get('next-page') != None:
+            next_page_element = request.GET.get('next-page', '').split('-')
+            if len(next_page_element) < 3:
+                next_page = 'http://' + DOMAIN
+            elif next_page_element[1] + '.' + next_page_element[2] != DOMAIN:
+                next_page = 'http://' + DOMAIN
+            elif next_page_element[1] + '.' + next_page_element[2] == DOMAIN:
+                next_page = 'http://' + next_page_element[0] + '.' + DOMAIN
+            else:
+                next_page = 'http://' + DOMAIN
+            return HttpResponseRedirect(next_page)
         else:
-            next_page = 'http://' + DOMAIN
-
-        return HttpResponseRedirect(next_page)
+            return response
 
 
 def register(request):
