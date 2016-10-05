@@ -85,9 +85,8 @@ def forgot_password(request):
 
                 subject, from_email, to = '密碼變更＠選課小幫手', 'noreply@mail.stufinite.faith', user.email
                 html_content = htmly.render(d)
-                msg = EmailMultiAlternatives(
-                    subject, text_content, from_email, [to])
-                msg.attach_alternative(html_content, "text/html")
+                msg = EmailMessage(subject, html_content, from_email, [to])
+                msg.content_subtype = "html"  # Main content is now text/html
                 msg.send()
 
                 # from django.core.mail import send_mail
