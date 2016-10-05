@@ -73,16 +73,32 @@ def forgot_password(request):
         try:
             user = User.objects.get(email=request.POST.get('email'))
             if user.first_name == request.POST.get('first_name') and user.last_name == request.POST.get('last_name'):
-                print(user.email)
-                from django.core.mail import send_mail
-                send_mail(
-                    '密碼變更＠選課小幫手',
-                    '這裡是你的新密碼',
-                    'noreply@stufinite.faith',
-                    [user.email],
-                    fail_silently=False,
-                )
-                print('sent')
+                password = User.objects.make_random_password()
+                user.set_password(password)
+
+                from django.core.mail import EmailMultiAlternatives
+                from django.template.loader import get_template
+                from django.template import Context
+
+                htmly = get_template('email/forgotpassword.html')
+                d = Context({'password': password})
+
+                subject, from_email, to = '密碼變更＠選課小幫手', 'noreply@mail.stufinite.faith', user.email
+                html_content = htmly.render(d)
+                msg = EmailMultiAlternatives(
+                    subject, text_content, from_email, [to])
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+
+                # from django.core.mail import send_mail
+                # send_mail(
+                #     '密碼變更＠選課小幫手',
+                #     '這裡是你的新密碼: ' + password,
+                #     'noreply@mail.stufinite.faith',
+                #     [user.email],
+                #     fail_silently=False,
+                # )
+
                 return render(request, 'success.html', {'title': '密碼已寄送', 'context': '前往信箱取得新的密碼'})
             else:
                 raise User.DoesNotExist
