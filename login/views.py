@@ -76,27 +76,18 @@ def forgot_password(request):
                 password = User.objects.make_random_password()
                 user.set_password(password)
 
-                from django.core.mail import EmailMultiAlternatives, EmailMessage
-                from django.template.loader import get_template
+                from django.core.mail import EmailMessage
                 from django.template import Context
-
-                htmly = get_template('email/forgotpassword.html')
-                d = Context({'password': password})
+                from django.template.loader import get_template
 
                 subject, from_email, to = '密碼變更＠選課小幫手', 'noreply@mail.stufinite.faith', user.email
-                html_content = htmly.render(d)
+                html_content = get_template(
+                    'email/forgotpassword.html').render(Context({'password': password}))
                 msg = EmailMessage(subject, html_content, from_email, [to])
-                msg.content_subtype = "html"  # Main content is now text/html
+                msg.content_subtype = "html"
                 msg.send()
 
-                # from django.core.mail import send_mail
-                # send_mail(
-                #     '密碼變更＠選課小幫手',
-                #     '這裡是你的新密碼: ' + password,
-                #     'noreply@mail.stufinite.faith',
-                #     [user.email],
-                #     fail_silently=False,
-                # )
+                user.save()
 
                 return render(request, 'success.html', {'title': '密碼已寄送', 'context': '前往信箱取得新的密碼'})
             else:
