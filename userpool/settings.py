@@ -141,6 +141,7 @@ EMAIL_PORT = 25
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
 
+# Shared session
 SESSION_COOKIE_DOMAIN = '.stufinite.faith'
 with open(BASE_DIR + '/' + 'sessionid.txt') as f:
     SESSION_COOKIE_NAME = f.read().strip()
