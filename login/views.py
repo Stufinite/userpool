@@ -76,7 +76,7 @@ def forgot_password(request):
                 password = User.objects.make_random_password()
                 user.set_password(password)
 
-                from django.core.mail import EmailMultiAlternatives
+                from django.core.mail import EmailMultiAlternatives, EmailMessage
                 from django.template.loader import get_template
                 from django.template import Context
 
