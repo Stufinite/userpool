@@ -19,3 +19,8 @@ urlpatterns += [
     url(r'^accounts/profile/password$', views.profile_password, name='password'),
     url(r'^accounts/profile/edit$', views.profile_edit, name='edit'),
 ]
+
+
+urlpatterns += [
+    url(r'^accounts/verify/$', views.verify, name='verify'),
+]
