@@ -13,6 +13,7 @@ from .forms import UserCreateForm, UserModifyForm, UserForgotPasswordForm
 
 DOMAIN = 'stufinite.faith'
 
+import hashlib
 import redis
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
@@ -58,13 +59,10 @@ def register(request):
         if request.method == 'POST':
             form = UserCreateForm(request.POST)
             if form.is_valid():
-                new_user = form.save()
-
-                import hashlib
                 m = hashlib.sha1()
-                m.update(request.POST.get('email'))
-                m.update(request.POST.get('last_name'))
-                m.update(request.POST.get('first_name'))
+                m.update(request.POST.get('school_email').encode('utf-8'))
+                m.update(request.POST.get('last_name').encode('utf-8'))
+                m.update(request.POST.get('first_name').encode('utf-8'))
                 redis_client.set(m.hexdigest(), '')
 
                 subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', user.email
@@ -73,6 +71,8 @@ def register(request):
                 msg = EmailMessage(subject, html_content, from_email, [to])
                 msg.content_subtype = "html"
                 msg.send()
+
+                new_user = form.save()
 
                 return render(request, 'success.html', {'title': '註冊成功', 'context': '恭喜你成功註冊小幫手'})
         else:
