@@ -125,7 +125,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 from .settings_database import DATABASE_SETTINGS
-DATABASES = DATABASE_SETTINGS['sqlite']
+DATABASES = DATABASE_SETTINGS['mysql']
 
 # Email
 # https://docs.djangoproject.com/en/1.10/ref/settings/#email
