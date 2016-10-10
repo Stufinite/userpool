@@ -67,7 +67,7 @@ def register(request):
 
                 subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', request.POST.get('school_email')
                 html_content = get_template(
-                    'email/verification.html').render(Context({'key': m.hexdigest(), 'email': request.POST.get('email')}))
+                    'email/verification.html').render(Context({'key': m.hexdigest(), 'email': request.POST.get('school_email')}))
                 msg = EmailMessage(subject, html_content, from_email, [to])
                 msg.content_subtype = "html"
                 msg.send()
