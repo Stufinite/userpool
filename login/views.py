@@ -88,7 +88,7 @@ def register(request):
 
 def verify(request):
     if redis_client.get(request.GET.get('key')) != None:
-        request.GET.delete('key')
+        redis_client.delete(request.GET.get('key'))
         user = User.objects.get(email=request.GET.get('email'))
         user.userprofile.verified = True
         user.userprofile.save()
