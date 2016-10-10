@@ -65,7 +65,7 @@ def register(request):
                 m.update(request.POST.get('first_name').encode('utf-8'))
                 redis_client.set(m.hexdigest(), '')
 
-                subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', user.email
+                subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', request.POST.get('school_email')
                 html_content = get_template(
                     'email/verification.html').render(Context({'key': m.hexdigest(), 'email': request.POST.get('email')}))
                 msg = EmailMessage(subject, html_content, from_email, [to])
