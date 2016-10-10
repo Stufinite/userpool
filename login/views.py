@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -84,12 +84,15 @@ def register(request):
 
 
 def verify(request):
-    redis_client.get(request.GET.get('key'))
-    user = User.objects.get(email=request.GET.get('email'))
-    user.userprofile.verified = True
-    user.userprofile.save()
-    user.save()
-    return render(request, 'success.html', {'title': '驗證成功', 'context': '信箱已通過驗證'})
+    if redis_client.get(request.GET.get('key')) != None:
+        request.GET.delelte('key')
+        user = User.objects.get(email=request.GET.get('email'))
+        user.userprofile.verified = True
+        user.userprofile.save()
+        user.save()
+        return render(request, 'success.html', {'title': '驗證成功', 'context': '信箱已通過驗證'})
+    else:
+        raise Http404
 
 
 def forgot_password(request):
