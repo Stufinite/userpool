@@ -47,8 +47,11 @@ def login(request):
             else:
                 next_page = 'http://' + DOMAIN
             return HttpResponseRedirect(next_page)
-        else:
+        elif request.GET.get('next') != None:
             return response
+        else:
+            next_page = 'http://' + DOMAIN
+            return HttpResponseRedirect(next_page)
 
 
 def register(request):
