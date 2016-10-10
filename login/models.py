@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    school_email = models.EmailField(default='')
+    school_email = models.EmailField(default='', unique=True)
     grade = models.IntegerField(default=1)
     major = models.CharField(max_length=100, default='')
     verified = models.BooleanField(default=False)

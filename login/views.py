@@ -87,6 +87,8 @@ def verify(request):
     redis_client.get(request.GET.get('key'))
     user = User.objects.get(email=request.GET.get('email'))
     user.userprofile.verified = True
+    user.userprofile.save()
+    user.save()
     return render(request, 'success.html', {'title': '驗證成功', 'context': '信箱已通過驗證'})
 
 
