@@ -5,9 +5,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 
+from django.core.mail import EmailMessage
+from django.template import Context
+from django.template.loader import get_template
+
 from .forms import UserCreateForm, UserModifyForm, UserForgotPasswordForm
 
 DOMAIN = 'stufinite.faith'
+
+import redis
+redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
 def index(request):
@@ -52,6 +59,21 @@ def register(request):
             form = UserCreateForm(request.POST)
             if form.is_valid():
                 new_user = form.save()
+
+                import hashlib
+                m = hashlib.sha1()
+                m.update(request.POST.get('email'))
+                m.update(request.POST.get('last_name'))
+                m.update(request.POST.get('first_name'))
+                redis_client.set(m.hexdigest(), '')
+
+                subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', user.email
+                html_content = get_template(
+                    'email/verification.html').render(Context({'key': m.hexdigest(), 'email': request.POST.get('email')}))
+                msg = EmailMessage(subject, html_content, from_email, [to])
+                msg.content_subtype = "html"
+                msg.send()
+
                 return render(request, 'success.html', {'title': '註冊成功', 'context': '恭喜你成功註冊小幫手'})
         else:
             form = UserCreateForm()
@@ -59,6 +81,13 @@ def register(request):
     else:
         next_page = 'http://' + DOMAIN
         return HttpResponseRedirect(next_page)
+
+
+def verify(request):
+    redis_client.get(request.GET.get('key'))
+    user = User.objects.get(email=request.GET.get('email'))
+    user.userprofile.verified = True
+    return render(request, 'success.html', {'title': '驗證成功', 'context': '信箱已通過驗證'})
 
 
 def forgot_password(request):
@@ -74,11 +103,7 @@ def forgot_password(request):
             user = User.objects.get(email=request.POST.get('email'))
             if user.first_name == request.POST.get('first_name') and user.last_name == request.POST.get('last_name'):
                 password = User.objects.make_random_password()
-                user.set_password(password)
-
-                from django.core.mail import EmailMessage
-                from django.template import Context
-                from django.template.loader import get_template
+                user.set_password(password)  # Reset password
 
                 subject, from_email, to = '密碼變更＠選課小幫手', 'noreply@mail.stufinite.faith', user.email
                 html_content = get_template(
