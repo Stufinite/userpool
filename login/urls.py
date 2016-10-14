@@ -1,14 +1,12 @@
 from django.conf.urls import url
 
 from . import views
-from django.contrib.auth import views as auth_views
 
 # Views that related with user creation and authentication
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^accounts/login/$', views.login, name='login'),
-    url(r'^accounts/logout/$', auth_views.logout,
-        {'template_name': 'logout.html'}, name='logout'),
+    url(r'^accounts/logout/$', views.logout, name='logout'),
     url(r'^accounts/register/$', views.register, name='register'),
     url(r'^accounts/forgot/$', views.forgot_password, name='forgot'),
 ]
@@ -23,4 +21,8 @@ urlpatterns += [
 
 urlpatterns += [
     url(r'^accounts/verify/$', views.verify, name='verify'),
+]
+
+urlpatterns += [
+    url(r'^auth/get_username/$', views.get_username, name='get_username'),
 ]

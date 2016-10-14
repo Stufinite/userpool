@@ -1,14 +1,18 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
+
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
+from django.contrib.sessions.models import Session
 
 from django.core.mail import EmailMessage
 from django.template import Context
 from django.template.loader import get_template
 
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
+
+from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserCreateForm, UserModifyForm, UserForgotPasswordForm
 
 DOMAIN = 'stufinite.faith'
@@ -16,6 +20,9 @@ DOMAIN = 'stufinite.faith'
 import hashlib
 import redis
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+import pylibmc
+memcache_client = pylibmc.Client(['127.0.0.1:11211'])
 
 
 def index(request):
@@ -50,8 +57,17 @@ def login(request):
         elif request.GET.get('next') != None:
             return response
         else:
-            next_page = 'http://' + DOMAIN
-            return HttpResponseRedirect(next_page)
+            return redirect('/accounts/profile')
+
+
+@login_required
+@never_cache
+def logout(request):
+    from django.contrib.auth import views as auth_views
+
+    response = auth_views.logout(request, template_name='logout.html')
+
+    return response
 
 
 def register(request):
@@ -68,7 +84,8 @@ def register(request):
                 m.update(request.POST.get('first_name').encode('utf-8'))
                 redis_client.set(m.hexdigest(), '')
 
-                subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', request.POST.get('school_email')
+                subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', request.POST.get(
+                    'school_email')
                 html_content = get_template(
                     'email/verification.html').render(Context({'key': m.hexdigest(), 'email': request.POST.get('school_email')}))
                 msg = EmailMessage(subject, html_content, from_email, [to])
@@ -134,6 +151,7 @@ def forgot_password(request):
 
 
 @login_required
+@never_cache
 def profile_info(request):
     """
     View that shows user profile
@@ -142,6 +160,7 @@ def profile_info(request):
 
 
 @login_required
+@never_cache
 def profile_password(request):
     """
     View that allow user to change password
@@ -157,6 +176,7 @@ def profile_password(request):
 
 
 @login_required
+@never_cache
 def profile_edit(request):
     """
     View that allow user to edit profile
@@ -178,3 +198,16 @@ def profile_edit(request):
         'major': user.userprofile.major
     })
     return render(request, 'profile/edit.html', {'form': form})
+
+
+@never_cache
+def get_username(request):
+    session_key = request.session.session_key
+    if memcache_client.get(':1:django.contrib.sessions.cache' + session_key) != None:
+        uid = memcache_client.get(':1:django.contrib.sessions.cache' + session_key)['_auth_user_id']
+        user = User.objects.get(pk=uid)
+        response = HttpResponse(user.username)
+    else:
+        raise Http404
+
+    return response

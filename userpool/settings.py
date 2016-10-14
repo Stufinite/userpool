@@ -38,6 +38,7 @@ REQUIRED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 PROJECT_APPS = [
@@ -47,6 +48,7 @@ PROJECT_APPS = [
 INSTALLED_APPS = REQUIRED_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
@@ -146,13 +148,20 @@ EMAIL_PORT = 25
 
 # Shared session
 SESSION_COOKIE_DOMAIN = '.stufinite.faith'
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 with open(BASE_DIR + '/' + 'sessionid.txt') as f:
     SESSION_COOKIE_NAME = f.read().strip()
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_REGEX_WHITELIST = ('^(http?://)?(\w+\.)?stufinite\.faith$', ) # TODO Use HTTPS
+CORS_ALLOW_METHODS = (
+    'GET',
+)
