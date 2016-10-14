@@ -116,6 +116,14 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Settings for our specific uses
+
+# Database
+# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+
+from .settings_database import DATABASE_SETTINGS
+DATABASES = DATABASE_SETTINGS['mysql']
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -123,14 +131,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
-# Settings for out specific uses
-
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-from .settings_database import DATABASE_SETTINGS
-DATABASES = DATABASE_SETTINGS['mysql']
 
 # Email
 # https://docs.djangoproject.com/en/1.10/ref/settings/#email
@@ -153,6 +153,7 @@ with open(BASE_DIR + '/' + 'sessionid.txt') as f:
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
+# Cache
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
@@ -160,8 +161,10 @@ CACHES = {
     }
 }
 
+# CORS header
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_REGEX_WHITELIST = ('^(http?://)?(\w+\.)?stufinite\.faith$', ) # TODO Use HTTPS
+CORS_ORIGIN_REGEX_WHITELIST = (
+    '^(http?://)?(\w+\.)?stufinite\.faith$', )  # TODO Use HTTPS
 CORS_ALLOW_METHODS = (
     'GET',
 )
