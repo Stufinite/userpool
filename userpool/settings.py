@@ -122,7 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 from .settings_database import DATABASE_SETTINGS
-DATABASES = DATABASE_SETTINGS['mysql']
+DATABASES = DATABASE_SETTINGS['sqlite']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
