@@ -203,11 +203,9 @@ def profile_edit(request):
 @never_cache
 def get_username(request):
     session_key = request.session.session_key
-    if memcache_client.get(':1:django.contrib.sessions.cache' + session_key) != None:
+    if session_key == None or memcache_client.get(':1:django.contrib.sessions.cache' + session_key) == None:
+        raise Http404
+    else:
         uid = memcache_client.get(':1:django.contrib.sessions.cache' + session_key)['_auth_user_id']
         user = User.objects.get(pk=uid)
-        response = HttpResponse(user.username)
-    else:
-        raise Http404
-
-    return response
+        return HttpResponse(user.username)
