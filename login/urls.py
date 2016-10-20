@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from . import views
+from . import views, apis
 
 # Views that related with user creation and authentication
 urlpatterns = [
@@ -24,6 +24,6 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    url(r'^auth/get_username/$', views.get_username),
-    url(r'^auth/get_username/(?P<session_id>\w*)$', views.get_username),
+    url(r'^auth/get_username/$', apis.get_username),
+    url(r'^auth/get_username/(?P<session_id>\w*)$', apis.get_username),
 ]

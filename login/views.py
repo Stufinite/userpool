@@ -3,7 +3,6 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import update_session_auth_hash
 
 from django.contrib.auth.models import User
-from django.contrib.sessions.models import Session
 
 from django.core.mail import EmailMessage
 from django.template import Context
@@ -20,9 +19,6 @@ DOMAIN = 'stufinite.faith'
 import hashlib
 import redis
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
-
-import pylibmc
-memcache_client = pylibmc.Client(['127.0.0.1:11211'])
 
 
 def index(request):
@@ -198,15 +194,3 @@ def profile_edit(request):
         'major': user.userprofile.major
     })
     return render(request, 'profile/edit.html', {'form': form})
-
-
-@never_cache
-def get_username(request, session_id=''):
-    session_key = request.session.session_key if session_id == '' else session_id
-    if session_key == None or memcache_client.get(':1:django.contrib.sessions.cache' + session_key) == None:
-        # raise Http404
-        return HttpResponse('None')
-    else:
-        uid = memcache_client.get(':1:django.contrib.sessions.cache' + session_key)['_auth_user_id']
-        user = User.objects.get(pk=uid)
-        return HttpResponse(user.username)

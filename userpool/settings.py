@@ -164,7 +164,9 @@ CACHES = {
 # CORS header
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_REGEX_WHITELIST = (
-    '^(http?://)?(\w+\.)?stufinite\.faith$', )  # TODO Use HTTPS
+    '^(http?://)?(\w+\.)?stufinite\.faith$',
+    '^(http?://)localhost$'
+)  # TODO Use HTTPS
 CORS_ALLOW_METHODS = (
     'GET',
 )
