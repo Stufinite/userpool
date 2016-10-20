@@ -118,9 +118,9 @@ def reverify(request):
     user = request.user
 
     m = hashlib.sha1()
-    m.update(user.userprofile.school_email)
-    m.update(user.last_name)
-    m.update(user.first_name)
+    m.update(user.userprofile.school_email.encode('utf-8'))
+    m.update(user.last_name.encode('utf-8'))
+    m.update(user.first_name.encode('utf-8'))
 
     redis_client.set(m.hexdigest(), '')
 
