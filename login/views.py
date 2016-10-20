@@ -74,6 +74,8 @@ def register(request):
         if request.method == 'POST':
             form = UserCreateForm(request.POST)
             if form.is_valid():
+                if request.POST.get('school_email').encode('utf-8').splite('@')[1] != 'mail.nchu.edu.tw':
+                    return render(request, 'register.html', {'form': form, 'type_error': True})
                 m = hashlib.sha1()
                 m.update(request.POST.get('school_email').encode('utf-8'))
                 m.update(request.POST.get('last_name').encode('utf-8'))

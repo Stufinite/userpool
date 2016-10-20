@@ -16,7 +16,7 @@
         <form action="{% url 'register' %}" method="post">
           {% csrf_token %}
           {% if type_error %}
-          <span class="type-error">輸入格式錯誤或帳號不存在</span>
+          <span class="type-error">輸入格式錯誤 (目前僅開放 mail.nchu.edu.tw 進行註冊)</span>
           {% endif %}
 
           {{ form.as_p }}
