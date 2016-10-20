@@ -201,8 +201,8 @@ def profile_edit(request):
 
 
 @never_cache
-def get_username(request):
-    session_key = request.session.session_key
+def get_username(request, session_id=''):
+    session_key = request.session.session_key if session_id == '' else session_id
     if session_key == None or memcache_client.get(':1:django.contrib.sessions.cache' + session_key) == None:
         # raise Http404
         return HttpResponse('None')

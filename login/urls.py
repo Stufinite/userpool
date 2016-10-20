@@ -24,5 +24,6 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    url(r'^auth/get_username/$', views.get_username, name='get_username'),
+    url(r'^auth/get_username/$', views.get_username),
+    url(r'^auth/get_username/(?P<session_id>\w*)$', views.get_username),
 ]
