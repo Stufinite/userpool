@@ -113,6 +113,28 @@ def verify(request):
         raise Http404
 
 
+@login_required
+def reverify(request):
+    user = request.user
+
+    m = hashlib.sha1()
+    m.update(user.userprofile.school_email)
+    m.update(user.last_name)
+    m.update(user.first_name)
+
+    redis_client.set(m.hexdigest(), '')
+
+    subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', request.POST.get(
+        'school_email')
+    html_content = get_template(
+        'email/verification.html').render(Context({'key': m.hexdigest(), 'email': request.POST.get('school_email')}))
+    msg = EmailMessage(subject, html_content, from_email, [to])
+    msg.content_subtype = "html"
+    msg.send()
+
+    return render(request, 'success.html', {'title': '驗證信件已寄出', 'context': '請收取信件以完成驗證'})
+
+
 def forgot_password(request):
     """
     View that send a new password to a registered email

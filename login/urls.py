@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^accounts/register/$', views.register, name='register'),
     url(r'^accounts/forgot/$', views.forgot_password, name='forgot'),
     url(r'^accounts/verify/$', views.verify, name='verify'),
+    url(r'^accounts/verify/resend$', views.reverify, name='reverify'),
 ]
 
 # Views that related with user profile
