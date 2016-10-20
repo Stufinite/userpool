@@ -18,7 +18,7 @@
   vertical-align: middle;
 }
 .stufinite-header-search input {
-  display: table-cell;
+  /*display: table-cell;*/
   margin: 0;
   padding-left: 8px;
   width: 80%;
@@ -29,14 +29,15 @@
   vertical-align: middle;
 }
 .stufinite-header-search button {
-  display: table-cell;
+  /*display: table-cell;*/
   margin: 0;
   padding: 0 0;
   width: 60px;
-  height: 32px;
+  height: 34px;
   border: 1px solid #403F3F;
+  border-radius: 0px 6px 6px 0px;
   box-shadow: 0px 0px 2px black;
-  color: #FFFFFF;
-  background-color: #403F3F;
+  color: #403F3F;
+  background-color: #DEDEDE;
   vertical-align: middle;
 }

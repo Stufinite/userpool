@@ -51,7 +51,9 @@ footer a {
     margin-left: 8px;
     height: 24px;
     border: 1px solid white;
+    vertical-align: middle;
     background-color: transparent;
     color: #FFFFFF;
     font-size: 14px;
+    line-height: 18px;
 }

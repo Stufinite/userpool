@@ -71,3 +71,7 @@
     color: #FFFFFF;
     font-size: 13px;
 }
+
+.stufinite-header-search {
+  display: none;
+}
