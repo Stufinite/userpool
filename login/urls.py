@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^accounts/logout/$', views.logout, name='logout'),
     url(r'^accounts/register/$', views.register, name='register'),
     url(r'^accounts/forgot/$', views.forgot_password, name='forgot'),
+    url(r'^accounts/verify/$', views.verify, name='verify'),
 ]
 
 # Views that related with user profile
@@ -18,12 +19,10 @@ urlpatterns += [
     url(r'^accounts/profile/edit$', views.profile_edit, name='edit'),
 ]
 
-
+# User retrieve API
 urlpatterns += [
-    url(r'^accounts/verify/$', views.verify, name='verify'),
-]
-
-urlpatterns += [
+    url(r'^auth/get_user/$', apis.get_user),
+    url(r'^auth/get_user/(?P<session_id>\w*)$', apis.get_user),
     url(r'^auth/get_username/$', apis.get_username),
     url(r'^auth/get_username/(?P<session_id>\w*)$', apis.get_username),
 ]
