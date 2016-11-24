@@ -6,6 +6,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     school_email = models.EmailField(default='', unique=True)
+    school = models.CharField(max_length=100, default='') 
     grade = models.IntegerField(default=1)
     major = models.CharField(max_length=100, default='')
     second_major = models.CharField(max_length=100, default='')
