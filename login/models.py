@@ -8,6 +8,8 @@ class UserProfile(models.Model):
     school_email = models.EmailField(default='', unique=True)
     grade = models.IntegerField(default=1)
     major = models.CharField(max_length=100, default='')
+    second_major = models.CharField(max_length=100, default='')
+    career = models.CharField(max_length=100, default='')
     verified = models.BooleanField(default=False)
 
     def get_full_name(self):
