@@ -23,8 +23,8 @@ def get_user(request, session_id=''):
             'name': user.first_name + ' ' + user.last_name,
             'grade': user.userprofile.grade,
             'major': user.userprofile.major,
-            'second_user': user.userprofile.second_major,
-            'second_user': user.userprofile.career,
+            'second_major': user.userprofile.second_major,
+            'career': user.userprofile.career,
         }
         return JsonResponse(user_dict)
 
