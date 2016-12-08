@@ -40,21 +40,22 @@ def login(request):
         return response
     else:
         # Custom cross-site next_page handler
-        if request.GET.get('next-page') != None:
-            next_page_element = request.GET.get('next-page', '').split('-')
-            if len(next_page_element) < 3:
-                next_page = 'http://' + DOMAIN
-            elif next_page_element[1] + '.' + next_page_element[2] != DOMAIN:
-                next_page = 'http://' + DOMAIN
-            elif next_page_element[1] + '.' + next_page_element[2] == DOMAIN:
-                next_page = 'http://' + next_page_element[0] + '.' + DOMAIN
-            else:
-                next_page = 'http://' + DOMAIN
-            return HttpResponseRedirect(next_page)
-        elif request.GET.get('next') != None:
-            return response
-        else:
-            return redirect('/accounts/profile')
+        # if request.GET.get('next-page') != None:
+        #     next_page_element = request.GET.get('next-page', '').split('-')
+        #     if len(next_page_element) < 3:
+        #         next_page = 'http://' + DOMAIN
+        #     elif next_page_element[1] + '.' + next_page_element[2] != DOMAIN:
+        #         next_page = 'http://' + DOMAIN
+        #     elif next_page_element[1] + '.' + next_page_element[2] == DOMAIN:
+        #         next_page = 'http://' + next_page_element[0] + '.' + DOMAIN
+        #     else:
+        #         next_page = 'http://' + DOMAIN
+        #     return HttpResponseRedirect(next_page)
+        # elif request.GET.get('next') != None:
+        #     return response
+        # else:
+        #     return redirect('/accounts/profile')
+        return HttpResponseRedirect("http://entry.stufinite.faith")
 
 
 @login_required
