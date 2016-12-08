@@ -129,9 +129,9 @@ DATABASES = DATABASE_SETTINGS['sqlite']
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "login/static"),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "login/static"),
+# ]
 
 # Email
 # https://docs.djangoproject.com/en/1.10/ref/settings/#email
