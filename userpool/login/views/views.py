@@ -12,7 +12,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
 from django.contrib.auth.forms import PasswordChangeForm
-from .forms import UserCreateForm, UserModifyForm, UserForgotPasswordForm
+
+from login.forms import UserCreateForm, UserModifyForm, UserForgotPasswordForm
 
 DOMAIN = 'stufinite.faith'
 
