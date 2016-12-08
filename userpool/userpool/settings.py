@@ -128,6 +128,7 @@ DATABASES = DATABASE_SETTINGS['sqlite']
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = ''
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
