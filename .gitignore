@@ -1,5 +1,6 @@
 # Project stuff
 userpool/settings_database.py
+userpool/login/migrations/*
 uwsgi.deploy.ini
 db.sqlite3
 
