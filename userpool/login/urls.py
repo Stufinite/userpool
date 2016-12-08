@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from . import views, apis
+from .views import views, apis
 
 # Views that related with user creation and authentication
 urlpatterns = [
