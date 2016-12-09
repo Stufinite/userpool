@@ -56,9 +56,13 @@ class UserModifyForm(forms.ModelForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length=20)
     last_name = forms.CharField(max_length=20)
-    career = forms.CharField(max_length=100)
-    major = forms.CharField(max_length=100)
-    second_major = forms.CharField(max_length=100)
+
+    career = forms.ChoiceField(
+        choices=CAREER_CHOICES, widget=forms.Select(), required=True)
+    major = forms.ChoiceField(
+        choices=MAJOR_CHOICES, widget=forms.Select(), required=True)
+    second_major = forms.ChoiceField(
+        choices=SECOND_MAJOR_CHOICES, widget=forms.Select(), required=True)
     grade = forms.IntegerField(min_value=1, max_value=7)
 
     class Meta:

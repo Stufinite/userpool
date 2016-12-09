@@ -209,4 +209,4 @@ MAJOR_CHOICES = [
     ))
 ]
 
-SECOND_MAJOR_CHOICES = [("None", "無雙修科目")] + MAJOR_CHOICES
+SECOND_MAJOR_CHOICES = [("無雙修科目", "無雙修科目")] + MAJOR_CHOICES

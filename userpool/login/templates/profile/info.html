@@ -25,6 +25,11 @@
     </li>
 
     <li class='stufinite-profile-menu-item'>
+      <span class='stufinite-profile-menu-title'>雙主修科目</span>
+      {{ userprofile.second_major }}
+    </li>
+
+    <li class='stufinite-profile-menu-item'>
       <span class='stufinite-profile-menu-title'>認證</span>
        {% if userprofile.verified %}
        已認證
