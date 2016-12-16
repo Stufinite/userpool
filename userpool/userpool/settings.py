@@ -26,7 +26,7 @@ with open(BASE_DIR + '/' + 'secret_key.txt') as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.stufinite.faith']
+ALLOWED_HOSTS = ['.campass.com.tw', 'localhost', '127,0,0,1', '0.0.0.0']
 
 
 # Application definition
@@ -122,7 +122,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 from .settings_database import DATABASE_SETTINGS
-DATABASES = DATABASE_SETTINGS['sqlite']
+if DEBUG:
+    DATABASES = DATABASE_SETTINGS['sqlite']
+else:
+    DATABASES = DATABASE_SETTINGS['mysql']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
@@ -148,7 +151,7 @@ SECURE_SSL_REDIRECT = True
 # SESSION_COOKIE_SECURE = True
 
 # Shared session
-SESSION_COOKIE_DOMAIN = '.stufinite.faith'
+SESSION_COOKIE_DOMAIN = '.campass.com.tw'
 with open(BASE_DIR + '/' + 'sessionid.txt') as f:
     SESSION_COOKIE_NAME = f.read().strip()
 
@@ -165,7 +168,7 @@ CACHES = {
 # CORS header
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_REGEX_WHITELIST = (
-    '^(http?://)?(\w+\.)?stufinite\.faith$',
+    '^(http?://)?(\w+\.)?campass\.com\.tw$',
     '^(http?://)localhost$'
 )  # TODO Use HTTPS
 CORS_ALLOW_METHODS = (
