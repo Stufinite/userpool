@@ -7,7 +7,7 @@ from login.choices import *
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    school_email = models.EmailField(default='', unique=True)
+    school_email = models.EmailField(default='')
 
     school = models.CharField(
         max_length=100, choices=SCHOOL_CHOICES, default='NCHU')
