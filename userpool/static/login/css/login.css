@@ -61,7 +61,7 @@
     line-height: 20px;
 }
 
-.stufinite-form-container form button {
+.stufinite-form-container form button, #next-page {
     display: block;
     margin-top: 8px;
     margin-bottom: 8px;
@@ -72,6 +72,10 @@
     background-color: green;
     color: #FFFFFF;
     font-size: 13px;
+}
+
+#next-page {
+  background-color: lightblue;
 }
 
 .stufinite-header-search {

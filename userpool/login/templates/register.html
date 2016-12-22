@@ -10,20 +10,56 @@
 
 {% block content %}
 <div class='stufinite-app-container'>
-  <div class='stufinite-app-content'>
-      <section class="stufinite-form-container">
-        <h1>註冊小幫手</h1>
-        <form action="{% url 'register' %}" method="post">
-          {% csrf_token %}
-          {% if type_error %}
-          <span class="type-error">輸入格式錯誤 (目前僅開放 mail.nchu.edu.tw 進行註冊)</span>
-          {% endif %}
-
-          {{ form.as_p }}
-
-          <button type="submit" name="button">註冊</button>
-        </form>
-        <a href="/accounts/login">已經有帳號了，點此登入</a>
-      </section>
+    <div class='stufinite-app-content'>
+        <section class="stufinite-form-container">
+            <h1 id="section-title">註冊小幫手</h1>
+            <form action="{% url 'register' %}" method="post" id="form">
+                {% csrf_token %} {% if type_error %}
+                <span class="type-error">輸入格式錯誤 (目前僅開放 mail.nchu.edu.tw 進行註冊)</span> {% endif %} {{ form.as_p }}
+                <div>
+                
+                  <button id="id_register_btn" type="submit" name="register-btn">註冊</button>
+                </div>
+            </form>
+            <button type="button" id="next-page">下一頁</button>
+            <a href="/accounts/login">已經有帳號了，點此登入</a>
+        </section>
+    </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    let count = 0;
+    displayPage(count);
+    count += 1;
+    $("#next-page").bind("click", () => {
+      displayPage(count);
+      count += 1;
+    });
+
+    function displayPage(num) {
+      $("#form").hide()
+      let pages = [{
+          "title": "選擇學校",
+          "content": ["school"]
+      }, {
+          "title": "選擇學制系級",
+          "content": ["career", "major", "second_major", "grade"]
+      }, {
+          "title": "個人基本資料",
+          "content": ["username", "school_email", "first_name", "last_name", "password1", "password2", "register_btn"]
+      }, ]
+
+      $("#form").show();
+      $("#form").children().hide();
+      $("#section-title").text(pages[num]["title"])
+      for (let name of pages[num]["content"]) {
+          $("#id_" + name).parent().show()
+      }
+      if (num == pages.length - 1) {
+          $("#next-page").remove()
+      }
+    }
+</script>
 {% endblock %}
