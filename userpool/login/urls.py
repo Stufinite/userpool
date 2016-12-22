@@ -22,8 +22,7 @@ urlpatterns += [
 
 # User retrieve API
 urlpatterns += [
+    url(r'^control_api/session_key/$', apis.get_session_key),
     url(r'^auth/get_user/$', apis.get_user),
     url(r'^auth/get_user/(?P<session_id>\w*)$', apis.get_user),
-    url(r'^auth/get_username/$', apis.get_username),
-    url(r'^auth/get_username/(?P<session_id>\w*)$', apis.get_username),
 ]
