@@ -15,12 +15,11 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 from login.forms import UserCreateForm, UserModifyForm, UserForgotPasswordForm
 
-DOMAIN = 'stufinite.faith'
-
 import hashlib
 import redis
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
+DOMAIN = "campass.com.tw"
 
 def index(request):
     return redirect('/accounts/login/')
@@ -39,23 +38,7 @@ def login(request):
         # The default response of django.contrib.auth.views.login
         return response
     else:
-        # Custom cross-site next_page handler
-        # if request.GET.get('next-page') != None:
-        #     next_page_element = request.GET.get('next-page', '').split('-')
-        #     if len(next_page_element) < 3:
-        #         next_page = 'http://' + DOMAIN
-        #     elif next_page_element[1] + '.' + next_page_element[2] != DOMAIN:
-        #         next_page = 'http://' + DOMAIN
-        #     elif next_page_element[1] + '.' + next_page_element[2] == DOMAIN:
-        #         next_page = 'http://' + next_page_element[0] + '.' + DOMAIN
-        #     else:
-        #         next_page = 'http://' + DOMAIN
-        #     return HttpResponseRedirect(next_page)
-        # elif request.GET.get('next') != None:
-        #     return response
-        # else:
-        #     return redirect('/accounts/profile')
-        return HttpResponseRedirect("http://entry.stufinite.faith")
+        return HttpResponseRedirect("http://" + DOMAIN)
 
 
 @login_required
@@ -84,7 +67,7 @@ def register(request):
                 m.update(request.POST.get('first_name').encode('utf-8'))
                 redis_client.set(m.hexdigest(), '')
 
-                subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', request.POST.get(
+                subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.' + DOMAIN, request.POST.get(
                     'school_email')
                 html_content = get_template(
                     'email/verification.html').render(Context({'key': m.hexdigest(), 'email': request.POST.get('school_email')}))
@@ -126,7 +109,7 @@ def reverify(request):
 
     redis_client.set(m.hexdigest(), '')
 
-    subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.stufinite.faith', user.userprofile.school_email
+    subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.' + DOMAIN, user.userprofile.school_email
     html_content = get_template(
         'email/verification.html').render(Context({'key': m.hexdigest(), 'email': user.userprofile.school_email}))
     msg = EmailMessage(subject, html_content, from_email, [to])
@@ -151,7 +134,7 @@ def forgot_password(request):
                 password = User.objects.make_random_password()
                 user.set_password(password)  # Reset password
 
-                subject, from_email, to = '密碼變更＠選課小幫手', 'noreply@mail.stufinite.faith', user.email
+                subject, from_email, to = '密碼變更＠選課小幫手', 'noreply@mail.' + DOMAIN, user.email
                 html_content = get_template(
                     'email/forgotpassword.html').render(Context({'password': password}))
                 msg = EmailMessage(subject, html_content, from_email, [to])
