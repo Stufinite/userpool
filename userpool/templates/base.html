@@ -13,37 +13,6 @@
 </head>
 
 <body>
-    <nav class='stufinite-nav'>
-        <div class='stufinite-nav-item'>
-            <a href='http://www.stufinite.faith'>小幫手首頁</a>
-        </div>
-
-        <div class='stufinite-nav-item'>
-            <a href='http://course.stufinite.faith'>選課小幫手</a>
-        </div>
-
-        <div class='stufinite-nav-item'>
-            <a href='http://course.stufinite.faith/agenda'>TiAgenda</a>
-        </div>
-
-        <div class='stufinite-nav-item'>
-            <a href='http://course.stufinite.faith/reviews'>課程心得</a>
-        </div>
-
-        <div class='stufinite-nav-item'>
-            <a href='http://t2e.stufinite.faith/'>今天吃什麼</a>
-        </div>
-
-        <div class='stufinite-nav-item stufinite-nav-right'>
-            {% if request.user.is_authenticated %}
-            <span class='stufinite-nav-user-info'>{{ request.user.username }}</span>
-            <a href="http://login.stufinite.faith/accounts/logout"><button class='stufinite-btn'>Logout</button></a>
-            {% else %}
-            <a href="http://login.stufinite.faith/accounts/login"><button class='stufinite-btn'>Login</button></a>
-            {% endif %}
-        </div>
-    </nav>
-
     <header class='stufinite-header'>
         <div class='stufinite-header-title'>
             <span>{% block app_name %}{% endblock %}小幫手</span>
