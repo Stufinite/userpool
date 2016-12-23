@@ -12,10 +12,20 @@
 <div class='stufinite-app-container'>
     <div class='stufinite-app-content'>
         <section class="stufinite-form-container">
+          <div id="error-div" class="type-error">
+            <ul id="error-list">
+              <li>輸入格式錯誤</li>
+              <li>(目前僅開放 mail.nchu.edu.tw 進行註冊)</li>
+            </ul>
+          </div>
+            {% if type_error %}
+            <span class="type-error">輸入格式錯誤</span>
+            <span class="type-error">(目前僅開放 mail.nchu.edu.tw 進行註冊)</span>
+            {% endif %}
             <h1 id="section-title">註冊小幫手</h1>
             <form action="{% url 'register' %}" method="post" id="form">
-                {% csrf_token %} {% if type_error %}
-                <span class="type-error">輸入格式錯誤 (目前僅開放 mail.nchu.edu.tw 進行註冊)</span> {% endif %} {{ form.as_p }}
+                {% csrf_token %}
+                {{ form.as_p }}
                 <div>
                   <label>使用者條款:</label>
                   <textarea readonly style="width:100%;height:200px;resize:none;">
@@ -72,36 +82,50 @@
 
 {% block javascript %}
 <script>
+    function displayPage(num) {
+        $("#form").hide()
+        let pages = [{
+            "title": "選擇學校",
+            "content": ["id_school"]
+        }, {
+            "title": "選擇學制系級",
+            "content": ["id_career", "id_major", "id_second_major", "id_grade"]
+        }, {
+            "title": "個人基本資料",
+            "content": ["id_username", "id_school_email", "id_first_name", "id_last_name", "id_password1", "id_password2", "id_register_btn"]
+        }, ]
+
+        $("#form").show();
+        $("#form").children().hide();
+
+        $("#id_school_email").val("@mail.nchu.edu.tw")
+        $("#section-title").text(pages[num]["title"])
+
+        for (let name of pages[num]["content"]) {
+            $("#" + name).parent().show()
+        }
+
+        if (num == pages.length - 1) {
+            $("#next-page").remove()
+        }
+    }
+
     let count = 0;
     displayPage(count);
     count += 1;
     $("#next-page").bind("click", () => {
-      displayPage(count);
-      count += 1;
+        displayPage(count);
+        count += 1;
     });
 
-    function displayPage(num) {
-      $("#form").hide()
-      let pages = [{
-          "title": "選擇學校",
-          "content": ["school"]
-      }, {
-          "title": "選擇學制系級",
-          "content": ["career", "major", "second_major", "grade"]
-      }, {
-          "title": "個人基本資料",
-          "content": ["username", "school_email", "first_name", "last_name", "password1", "password2", "register_btn"]
-      }, ]
-
-      $("#form").show();
-      $("#form").children().hide();
-      $("#section-title").text(pages[num]["title"])
-      for (let name of pages[num]["content"]) {
-          $("#id_" + name).parent().show()
-      }
-      if (num == pages.length - 1) {
-          $("#next-page").remove()
-      }
+    let errorUl = $("#form").find("ul")
+    if (errorUl.length != 0) {
+        let errorList = $("#error-list")
+        for (let i = 0; i < errorUl.length; i++) {
+            let li = $(errorUl[i]).find("li")[0]
+            errorList.append(li)
+        }
+        $("#error-div").show()
     }
 </script>
 {% endblock %}

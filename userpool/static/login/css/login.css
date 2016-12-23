@@ -26,11 +26,15 @@
 
 .stufinite-form-container .type-error {
     display: block;
-    height: 30px;
     border-radius: 4px;
     background-color: #F27572;
     color: #FFFFFF;
     line-height: 30px;
+}
+
+.stufinite-form-container .type-error ul {
+  list-style: none;
+  padding: 0;
 }
 
 .stufinite-form-container form label {
