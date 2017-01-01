@@ -14,8 +14,6 @@
         <section class="stufinite-form-container">
           <div id="error-div" class="type-error">
             <ul id="error-list">
-              <li>輸入格式錯誤</li>
-              <li>(目前僅開放 mail.nchu.edu.tw 進行註冊)</li>
             </ul>
           </div>
             {% if type_error %}
@@ -98,7 +96,7 @@
         $("#form").show();
         $("#form").children().hide();
 
-        $("#id_school_email").val("@mail.nchu.edu.tw")
+        // $("#id_school_email").val("@mail.nchu.edu.tw")
         $("#section-title").text(pages[num]["title"])
 
         for (let name of pages[num]["content"]) {
