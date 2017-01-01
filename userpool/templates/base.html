@@ -15,12 +15,20 @@
 <body>
     <header class='stufinite-header'>
         <div class='stufinite-header-title'>
-            <span>{% block app_name %}{% endblock %}小幫手</span>
+            <span><a href="http://www.campass.com.tw">Campass 選課小幫手2.0</a></span>
         </div>
+
         <div class='stufinite-header-search'>
-            <input id='search-form' type='text' placeholder='輸入課程名稱、代碼、教師名稱、系所名稱'>
-            <button><i class='fa fa-search' aria-hidden='true'></i></button>
+            <div></div>
         </div>
+
+        {% if user.is_authenticated %}
+        <div class='stufinite-header-item'>
+            <span class='stufinite-header-user-info'><a href="https://login.campass.com.tw/accounts/profile">{{ user.username }} 使用者設定</a></span>
+            <a href="http://login.campass.com.tw/accounts/logout"><button class='stufinite-btn'>Logout</button></a>
+        </div>
+        {% endif %}
+
     </header>
 
     {% block content %}

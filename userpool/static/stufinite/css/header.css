@@ -1,43 +1,70 @@
 .stufinite-header {
-  position: relative;
-  z-index: 50;
-  padding: 16px 32px 16px 32px;
-  width: 100%;
-  background-color: #4180B2;
+    position: relative;
+    z-index: 50;
+    display: flex;
+    -ms-flex-align: center;
+    padding: 16px 32px 16px 32px;
+    width: 100%;
+    background-color: #4180B2;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    align-items: center;
 }
+
+.stufinite-header div {
+    height: 100%;
+}
+
+.stufinite-header-item {
+    display: inline-block;
+    padding-left: 8px:
+}
+
+.stufinite-header-item a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.stufinite-header-item span {
+    color: #FFFFFF;
+}
+
 .stufinite-header-title {
-  display: inline-block;
-  color: #F7F7F7;
-  vertical-align: middle;
-  font-size: 32px;
+    display: inline-block;
+    width: 365px;
+    color: #F7F7F7;
+    font-size: 32px;
 }
+
+.stufinite-header-title a {
+    color: #F7F7F7;
+    text-decoration: none;
+}
+
 .stufinite-header-search {
-  display: inline-block;
-  margin-left: 64px;
-  width: 60%;
-  vertical-align: middle;
+    display: inline-block;
+    margin-right: 8px;
+    margin-left: 64px;
+    vertical-align: middle;
+    flex: 1;
+    align-items: center;
 }
-.stufinite-header-search input {
-  /*display: table-cell;*/
+
+.stufinite-header-search div {
   margin: 0;
   padding-left: 8px;
-  width: 80%;
+  width: 100%;
   height: 32px;
-  border: none;
-  box-shadow: 0px 0px 1px black;
-  color: #403F3F;
-  vertical-align: middle;
 }
-.stufinite-header-search button {
-  /*display: table-cell;*/
-  margin: 0;
-  padding: 0 0;
-  width: 60px;
-  height: 34px;
-  border: 1px solid #403F3F;
-  border-radius: 0px 6px 6px 0px;
-  box-shadow: 0px 0px 2px black;
-  color: #403F3F;
-  background-color: #DEDEDE;
-  vertical-align: middle;
+
+.stufinite-header-search input {
+    margin: 0;
+    padding-left: 8px;
+    width: 100%;
+    height: 32px;
+    border: none;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    box-shadow: 0px 0px 1px black;
+    color: #403F3F;
 }
