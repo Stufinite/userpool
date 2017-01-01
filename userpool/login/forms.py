@@ -49,7 +49,7 @@ class UserCreateForm(UserCreationForm):
             raise ValidationError("帳號格式為至少六個字元並少於三十個字元的英數以及 _ 的混合！")
         return username
 
-    def clean_email(self):
+    def clean_school_email(self):
         email = self.cleaned_data["school_email"]
         if User.objects.filter(email=email).exists():
             raise ValidationError("此信箱地址已經被註冊了喔！")
