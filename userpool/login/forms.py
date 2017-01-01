@@ -10,7 +10,7 @@ from login.choices import *
 
 
 class UserCreateForm(UserCreationForm):
-    username = forms.RegexField(label="Username", max_length=30,
+    username = forms.RegexField(label="帳號名稱", max_length=30,
                                 regex=r'^[A-Za-z0-9]+$',
                                 help_text="必填項目，帳號格式為至少六個字元並少於三十個字元的英數以及 _ 的混合",
                                 error_messages={
@@ -18,23 +18,24 @@ class UserCreateForm(UserCreationForm):
                                 })
 
     school_email = forms.EmailField(
+        label='學校提供的信箱',
         required=True,
         widget=forms.TextInput(attrs={
             'placeholder': 's123456789@mail.nchu.edu.tw'
         })
     )
-    first_name = forms.CharField(max_length=20, required=True)
-    last_name = forms.CharField(max_length=20, required=True)
+    first_name = forms.CharField(label='名字', max_length=20, required=True)
+    last_name = forms.CharField(label='姓氏', max_length=20, required=True)
 
-    school = forms.ChoiceField(
-        choices=SCHOOL_CHOICES, widget=forms.Select(), required=True)
-    career = forms.ChoiceField(
-        choices=CAREER_CHOICES, initial='U', widget=forms.Select(), required=True)
-    major = forms.ChoiceField(
-        choices=MAJOR_CHOICES, initial='資訊科學與工程學系學士班', widget=forms.Select(), required=True)
-    second_major = forms.ChoiceField(
-        choices=SECOND_MAJOR_CHOICES, initial='None', widget=forms.Select(), required=True)
-    grade = forms.IntegerField(initial=1, min_value=1, max_value=7)
+    school = forms.ChoiceField(label='就讀學校',
+                               choices=SCHOOL_CHOICES, widget=forms.Select(), required=True)
+    career = forms.ChoiceField(label='學制',
+                               choices=CAREER_CHOICES, initial='U', widget=forms.Select(), required=True)
+    major = forms.ChoiceField(label='就讀科系',
+                              choices=MAJOR_CHOICES, initial='資訊科學與工程學系學士班', widget=forms.Select(), required=True)
+    second_major = forms.ChoiceField(label='雙主修科系',
+                                     choices=SECOND_MAJOR_CHOICES, initial='None', widget=forms.Select(), required=True)
+    grade = forms.IntegerField(label='年級', initial=1, min_value=1, max_value=7)
 
     class Meta:
         model = User
@@ -70,7 +71,6 @@ class UserCreateForm(UserCreationForm):
             raise ValidationError("輸入的密碼不一致！")
         return password1
 
-
     def save(self, commit=True):
         user = super(UserCreateForm, self).save(commit)
         user.email = self.cleaned_data["school_email"]
@@ -93,17 +93,20 @@ class UserCreateForm(UserCreationForm):
 
 
 class UserModifyForm(forms.ModelForm):
-    email = forms.EmailField()
-    first_name = forms.CharField(max_length=20)
-    last_name = forms.CharField(max_length=20)
+    email = forms.EmailField(label='信箱',)
+    first_name = forms.CharField(label='名字', max_length=20)
+    last_name = forms.CharField(label='姓氏', max_length=20)
 
     career = forms.ChoiceField(
+        label='學制',
         choices=CAREER_CHOICES, widget=forms.Select(), required=True)
     major = forms.ChoiceField(
+        label='就讀科系',
         choices=MAJOR_CHOICES, widget=forms.Select(), required=True)
     second_major = forms.ChoiceField(
+        label='雙主修科系',
         choices=SECOND_MAJOR_CHOICES, widget=forms.Select(), required=True)
-    grade = forms.IntegerField(min_value=1, max_value=7)
+    grade = forms.IntegerField(label='年級', min_value=1, max_value=7)
 
     class Meta:
         model = User
@@ -133,9 +136,9 @@ class UserModifyForm(forms.ModelForm):
 
 
 class UserForgotPasswordForm(forms.Form):
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(max_length=20)
-    last_name = forms.CharField(max_length=20)
+    email = forms.EmailField(label='學校提供的信箱', required=True)
+    first_name = forms.CharField(label='註冊使用的名字', max_length=20)
+    last_name = forms.CharField(label='註冊使用的姓氏', max_length=20)
 
     class Meta:
         fields = ('email', 'first_name', 'last_name')
