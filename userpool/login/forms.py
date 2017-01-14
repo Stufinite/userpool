@@ -11,7 +11,7 @@ from login.choices import *
 
 class UserCreateForm(UserCreationForm):
     username = forms.RegexField(label="帳號名稱", max_length=30,
-                                regex=r'^[A-Za-z0-9]+$',
+                                regex=r'^[A-Za-z0-9_]+$',
                                 help_text="必填項目，帳號格式為至少六個字元並少於三十個字元的英數以及 _ 的混合",
                                 error_messages={
                                     'invalid': "帳號格式為至少六個字元並少於三十個字元的英數以及 _ 的混合"
