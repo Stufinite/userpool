@@ -25,6 +25,7 @@ with open(BASE_DIR + '/' + 'secret_key.txt') as f:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+# DEBUG = True
 
 ALLOWED_HOSTS = ['.campass.com.tw', 'localhost', '127,0,0,1', '0.0.0.0']
 
@@ -176,7 +177,7 @@ CORS_ALLOW_METHODS = (
 )
 
 # Dev
-# DEBUG = True
-# del SESSION_COOKIE_DOMAIN
-# del SECURE_PROXY_SSL_HEADER
-# SECURE_SSL_REDIRECT = False
+if DEBUG:
+    del SESSION_COOKIE_DOMAIN
+    del SECURE_PROXY_SSL_HEADER
+    SECURE_SSL_REDIRECT = False
