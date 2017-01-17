@@ -10,11 +10,11 @@ from login.choices import *
 
 
 class UserCreateForm(UserCreationForm):
-    username = forms.RegexField(label="帳號名稱", max_length=30,
+    username = forms.RegexField(label="帳號名稱(只允許使用英文、數字或者_進行註冊喔)", max_length=30,
                                 regex=r'^[A-Za-z0-9_]+$',
-                                help_text="必填項目，帳號格式為至少六個字元並少於三十個字元(只允許使用英文、數字以及_進行註冊喔)",
+                                help_text="必填項目，帳號長度至少為兩個字並少於三十個字元(只允許使用英文、數字以及_進行註冊喔)",
                                 error_messages={
-                                    'invalid': "帳號格式為至少六個字元並少於三十個字元(只允許使用英文、數字以及_進行註冊喔)"
+                                    'invalid': "帳號長度至少為兩個字並少於三十個字元(只允許使用英文、數字以及_進行註冊喔)"
                                 })
 
     school_email = forms.EmailField(
@@ -45,9 +45,9 @@ class UserCreateForm(UserCreationForm):
     def clean_username(self):
         username = self.cleaned_data['username']
         if not (30 > len(username) > 1):
-            raise ValidationError("帳號格式為至少六個字元並少於三十個字元(只允許使用英文、數字以及_進行註冊喔)")
+            raise ValidationError("您好 帳號長度至少為兩個字喔")
         elif username.isdigit():
-            raise ValidationError("帳號格式為至少六個字元並少於三十個字元(只允許使用英文、數字以及_進行註冊喔)")
+            raise ValidationError("您好 需要英文與數字的組合喔")
         return username
 
     def clean_school_email(self):
