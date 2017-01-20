@@ -116,6 +116,20 @@
         count += 1;
     });
 
+    $('#id_career').bind('change', () => {
+      let career = $("#id_career :selected").text();
+      $('#id_major').children().hide();
+      $('#id_major').find("optgroup[label='" + career + "']").show();
+      let first_opt = $($('#id_major').find("optgroup[label='" + career + "']").children()[0]).val()
+      $('#id_major').val(first_opt)
+    });
+
+    let career = $("#id_career :selected").text();
+    $('#id_major').children().hide();
+    $('#id_major').find("optgroup[label='" + career + "']").show();
+    let first_opt = $($('#id_major').find("optgroup[label='" + career + "']").children()[0]).val()
+    $('#id_major').val(first_opt)
+
     $("#error-div").hide()
     let errorUl = $("#form").find("ul")
     if (errorUl.length != 0) {
