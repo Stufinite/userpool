@@ -15,3 +15,68 @@
   </form>
 </section>
 {% endblock %}
+
+{% block javascript %}
+<script>
+    function displayPage(num) {
+        $("#form").hide()
+        let pages = [{
+            "title": "選擇學校",
+            "content": ["id_school"]
+        }, {
+            "title": "選擇學制系級",
+            "content": ["id_career", "id_major", "id_second_major", "id_grade"]
+        }, {
+            "title": "個人基本資料",
+            "content": ["id_username", "id_school_email", "id_first_name", "id_last_name", "id_password1", "id_password2", "id_register_btn"]
+        }, ]
+
+        $("#form").show();
+        $("#form").children().hide();
+
+        // $("#id_school_email").val("@mail.nchu.edu.tw")
+        $("#section-title").text(pages[num]["title"])
+
+        for (let name of pages[num]["content"]) {
+            $("#" + name).parent().show()
+        }
+
+        if (num == pages.length - 1) {
+            $("#next-page").remove()
+        }
+    }
+
+    let count = 0;
+    displayPage(count);
+    count += 1;
+    $("#next-page").bind("click", () => {
+        displayPage(count);
+        count += 1;
+    });
+
+    $('#id_career').bind('change', () => {
+      let career = $("#id_career :selected").text();
+      $('#id_major').children().hide();
+      $('#id_major').find("optgroup[label='" + career + "']").show();
+      let first_opt = $($('#id_major').find("optgroup[label='" + career + "']").children()[0]).val()
+      $('#id_major').val(first_opt)
+    });
+
+    let career = $("#id_career :selected").text();
+    $('#id_major').children().hide();
+    $('#id_major').find("optgroup[label='" + career + "']").show();
+    let first_opt = $($('#id_major').find("optgroup[label='" + career + "']").children()[0]).val()
+    $('#id_major').val(first_opt)
+
+    $("#error-div").hide()
+    let errorUl = $("#form").find("ul")
+    if (errorUl.length != 0) {
+        let errorList = $("#error-list")
+        for (let i = 0; i < errorUl.length; i++) {
+            let li = $(errorUl[i]).find("li")[0]
+            errorList.append(li)
+        }
+        $("#error-div").show()
+    }
+</script>
+{% endblock %}
