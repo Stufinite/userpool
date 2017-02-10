@@ -172,9 +172,10 @@ def profile_password(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
+            return render(request, 'profile/success.html')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'profile/password.html', {'form': form})
+        return render(request, 'profile/password.html', {'form': form})
 
 
 @login_required
