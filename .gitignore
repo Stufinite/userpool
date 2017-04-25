@@ -1,5 +1,5 @@
 # Project stuff
-userpool/settings_database.py
+userpool/userpool/settings_database.py
 userpool/login/migrations/*
 db.sqlite3
 
