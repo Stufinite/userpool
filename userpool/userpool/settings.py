@@ -171,10 +171,14 @@ CACHES = {
 
 # CORS header
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_REGEX_WHITELIST = [
-    '^(http?://)?(\w+\.)?campass\.com\.tw$',
-    '^(http?://)localhost$'
-]
+CORS_ORIGIN_WHITELIST = (
+    'campass.com.tw',
+    'test.localhost.www.campass.com.tw:8080'
+)
+# CORS_ORIGIN_REGEX_WHITELIST = (
+#     '^(http?://)?(\w+\.)?campass\.com\.tw$',
+#     '^(http?://)localhost$'
+# )
 CORS_ALLOW_METHODS = (
     'GET',
 )

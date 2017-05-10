@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 from login.choices import *
 
+
 class OAuthUserProfile(models.Model):
     school = models.CharField(
         max_length=64, choices=SCHOOL_CHOICES, default='')
@@ -15,7 +16,8 @@ class OAuthUserProfile(models.Model):
 
 class FacebookUser(models.Model):
     user_id = models.CharField(max_length=128, unique=True)
-    profile = models.OneToOneField(OAuthUserProfile, on_delete=models.CASCADE, null=True)
+    profile = models.OneToOneField(
+        OAuthUserProfile, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return '{}'.format(self.user_id)

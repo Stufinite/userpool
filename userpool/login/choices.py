@@ -7,6 +7,7 @@ CAREER_CHOICES = [('U', '學士學位'), ('G', '碩士學位'), ('D', '博士學
 def get_full_career_name(code):
     return list(filter(lambda x: x[0] == code, CAREER_CHOICES))[0][1]
 
+
 MAJOR_CHOICES = [
     (get_full_career_name('U'), (
         ("文學院", "文學院",),

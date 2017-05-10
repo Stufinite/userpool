@@ -22,11 +22,11 @@ urlpatterns += [
 
 # User retrieve API
 urlpatterns += [
-    url(r'^control_api/session_key/$', apis.get_session_key),
     url(r'^auth/get_user/$', apis.get_user),
     url(r'^auth/get_user/(?P<session_id>\w*)$', apis.get_user),
 ]
 
+# Facebook API
 urlpatterns += [
     url(r'^fb/$', fb.login),
     url(r'^fb/logout$', fb.logout),

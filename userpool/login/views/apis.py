@@ -7,8 +7,6 @@ from django.views.decorators.cache import never_cache
 import pylibmc
 memcache_client = pylibmc.Client(['127.0.0.1:11211'])
 
-def get_session_key(request):
-    return HttpResponse(request.session.session_key)
 
 @never_cache
 def get_user(request, session_id=''):

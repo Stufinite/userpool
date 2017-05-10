@@ -21,6 +21,7 @@ redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 DOMAIN = "campass.com.tw"
 
+
 def index(request):
     return redirect('/accounts/login/')
 
@@ -107,7 +108,8 @@ def reverify(request):
 
     redis_client.set(m.hexdigest(), '')
 
-    subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.' + DOMAIN, user.userprofile.school_email
+    subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.' + \
+        DOMAIN, user.userprofile.school_email
     html_content = get_template(
         'email/verification.html').render(Context({'key': m.hexdigest(), 'email': user.userprofile.school_email}))
     msg = EmailMessage(subject, html_content, from_email, [to])
