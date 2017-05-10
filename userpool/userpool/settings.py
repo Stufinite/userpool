@@ -119,6 +119,9 @@ USE_TZ = True
 
 # Settings for our specific uses
 
+# Domain name
+DOMAIN = 'login.campass.com.tw'
+
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -168,10 +171,10 @@ CACHES = {
 
 # CORS header
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_REGEX_WHITELIST = (
+CORS_ORIGIN_REGEX_WHITELIST = [
     '^(http?://)?(\w+\.)?campass\.com\.tw$',
     '^(http?://)localhost$'
-)  # TODO Use HTTPS
+]
 CORS_ALLOW_METHODS = (
     'GET',
 )

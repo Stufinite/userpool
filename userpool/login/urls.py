@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import views, apis
+from .views import views, apis, fb
 
 # Views that related with user creation and authentication
 urlpatterns = [
@@ -25,4 +25,10 @@ urlpatterns += [
     url(r'^control_api/session_key/$', apis.get_session_key),
     url(r'^auth/get_user/$', apis.get_user),
     url(r'^auth/get_user/(?P<session_id>\w*)$', apis.get_user),
+]
+
+urlpatterns += [
+    url(r'^fb/$', fb.login),
+    url(r'^fb/logout$', fb.logout),
+    url(r'^fb/user$', fb.user),
 ]
