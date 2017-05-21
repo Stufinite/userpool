@@ -5,7 +5,7 @@ from django.views.decorators.cache import never_cache
 
 import requests
 import json
-from login.models import FacebookUser, OAuthUserProfile
+from login.models import FacebookUser
 
 
 def login(request):
@@ -51,7 +51,7 @@ def logout(request):
 
 
 @never_cache
-def user(request):
+def user_get(request):
     if not request.session.session_key:
         request.session.save()
 
@@ -62,21 +62,21 @@ def user(request):
     if redis_get == None:
         return HttpResponse(None)
     else:
-        user = FacebookUser.objects.get(user_id=redis_get)
-        if user.profile == None:
+        user = FacebookUser.objects.get(user_id=redis_get.decode('utf-8'))
+        if '' in (user.school, user.career, user.major):
             profile = None
         else:
             profile = {
-                'school': user.profile.school,
-                'career': user.profile.career,
-                'major': user.profile.major,
-                'grade': user.profile.grade
+                'school': user.school,
+                'career': user.career,
+                'major': user.major,
+                'grade': user.grade
             }
         res = {'id': user.user_id, 'profile': profile}
         return JsonResponse(res)
 
 
-def user_edit(request):
+def user_edit(request, school, career, major, grade):
     if not request.session.session_key:
         request.session.save()
 
@@ -87,9 +87,10 @@ def user_edit(request):
     if redis_get == None:
         return HttpResponse(None)
     else:
-        user = FacebookUser.objects.get(user_id=redis_get)
-        if user.profile == None:
-            user.profile = OAuthUserProfile.objects.create()
-        else:
-            pass
+        user = FacebookUser.objects.get(user_id=redis_get.decode('utf-8'))
+        user.school = school
+        user.career = career
+        user.major = major
+        user.grade = int(grade)
+        user.save()
         return HttpResponse('Ok')

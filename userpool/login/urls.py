@@ -30,5 +30,6 @@ urlpatterns += [
 urlpatterns += [
     url(r'^fb/$', fb.login),
     url(r'^fb/logout$', fb.logout),
-    url(r'^fb/user$', fb.user),
+    url(r'^fb/user$', fb.user_get),
+    url(r'^fb/user/edit/(?P<school>\w*)/(?P<career>\w*)/(?P<major>\w*)/(?P<grade>\w*)$', fb.user_edit),
 ]
