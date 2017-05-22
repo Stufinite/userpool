@@ -6,6 +6,8 @@ from login.choices import *
 
 class FacebookUser(models.Model):
     user_id = models.CharField(max_length=128, unique=True)
+    username = models.CharField(max_length=64, default='')
+    email = models.EmailField(max_length=254, default='')
     school = models.CharField(
         max_length=64, choices=SCHOOL_CHOICES, default='')
     career = models.CharField(

@@ -15,6 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Domain name
+DOMAIN = 'campass.com.tw'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -27,7 +29,7 @@ with open(BASE_DIR + '/' + 'secret_key.txt') as f:
 DEBUG = False
 # DEBUG = True
 
-ALLOWED_HOSTS = ['.campass.com.tw', 'localhost', '127,0,0,1', '0.0.0.0']
+ALLOWED_HOSTS = ['.' + DOMAIN, 'localhost', '127.0.0.1', '0.0.0.0']
 
 
 # Application definition
@@ -103,6 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_PROFILE_MODULE = 'login.UserProfile'
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -118,9 +121,6 @@ USE_TZ = True
 
 
 # Settings for our specific uses
-
-# Domain name
-DOMAIN = 'login.campass.com.tw'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -140,28 +140,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-# Email
-# https://docs.djangoproject.com/en/1.10/ref/settings/#email
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
-
-# HTTPS
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-
 # Shared session
-SESSION_COOKIE_DOMAIN = '.campass.com.tw'
+
+SESSION_COOKIE_DOMAIN = '.' + DOMAIN
 with open(BASE_DIR + '/' + 'sessionid.txt') as f:
     SESSION_COOKIE_NAME = f.read().strip()
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 # Cache
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
@@ -169,22 +157,25 @@ CACHES = {
     }
 }
 
+# HTTPS
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+
 # CORS header
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
-    'campass.com.tw',
-    'test.localhost.www.campass.com.tw:8080'
+    'www.' + DOMAIN
 )
-# CORS_ORIGIN_REGEX_WHITELIST = (
-#     '^(http?://)?(\w+\.)?campass\.com\.tw$',
-#     '^(http?://)localhost$'
-# )
 CORS_ALLOW_METHODS = (
     'GET',
 )
 
 # Dev
+
 if DEBUG:
     del SESSION_COOKIE_DOMAIN
     del SECURE_PROXY_SSL_HEADER
     SECURE_SSL_REDIRECT = False
+    CORS_ORIGIN_ALLOW_ALL = True

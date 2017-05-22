@@ -19,10 +19,12 @@ import hashlib
 import redis
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-DOMAIN = "campass.com.tw"
+import userpool.settings as SETTINGS
 
 
 def index(request):
+    request.session.save()
+    return HttpResponse(request.session.session_key)
     return redirect('/accounts/login/')
 
 
@@ -39,7 +41,7 @@ def login(request):
         # The default response of django.contrib.auth.views.login
         return response
     else:
-        return HttpResponseRedirect("http://" + DOMAIN)
+        return HttpResponseRedirect("http://" + SETTINGS.DOMAIN)
 
 
 @login_required
@@ -66,7 +68,7 @@ def register(request):
                 m.update(request.POST.get('first_name').encode('utf-8'))
                 redis_client.set(m.hexdigest(), '')
 
-                subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.' + DOMAIN, request.POST.get(
+                subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.' + SETTINGS.DOMAIN, request.POST.get(
                     'school_email')
                 html_content = get_template(
                     'email/verification.html').render(Context({'key': m.hexdigest(), 'email': request.POST.get('school_email')}))
@@ -81,7 +83,7 @@ def register(request):
             form = UserCreateForm()
         return render(request, 'register.html', {'form': form})
     else:
-        next_page = 'http://' + DOMAIN
+        next_page = 'http://' + SETTINGS.DOMAIN
         return HttpResponseRedirect(next_page)
 
 
@@ -109,7 +111,7 @@ def reverify(request):
     redis_client.set(m.hexdigest(), '')
 
     subject, from_email, to = '信箱驗證＠選課小幫手', 'noreply@mail.' + \
-        DOMAIN, user.userprofile.school_email
+        SETTINGS.DOMAIN, user.userprofile.school_email
     html_content = get_template(
         'email/verification.html').render(Context({'key': m.hexdigest(), 'email': user.userprofile.school_email}))
     msg = EmailMessage(subject, html_content, from_email, [to])
@@ -124,7 +126,7 @@ def forgot_password(request):
     View that send a new password to a registered email
     """
     if not request.user.is_anonymous:
-        next_page = 'http://' + DOMAIN
+        next_page = 'http://' + SETTINGS.DOMAIN
         return HttpResponseRedirect(next_page)
 
     if request.method == 'POST':
@@ -134,7 +136,7 @@ def forgot_password(request):
                 password = User.objects.make_random_password()
                 user.set_password(password)  # Reset password
 
-                subject, from_email, to = '密碼變更＠選課小幫手', 'noreply@mail.' + DOMAIN, user.email
+                subject, from_email, to = '密碼變更＠選課小幫手', 'noreply@mail.' + SETTINGS.DOMAIN, user.email
                 html_content = get_template(
                     'email/forgotpassword.html').render(Context({'password': password}))
                 msg = EmailMessage(subject, html_content, from_email, [to])
