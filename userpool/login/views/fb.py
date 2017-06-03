@@ -36,7 +36,13 @@ def login(request):
     if redis_get == None:
         # Register or Login
         redis_client.set(request.session.session_key, user_id)
-        user = FacebookUser.objects.get_or_create(user_id=user_id)
+        user = FacebookUser.objects.get_or_create(user_id=user_id)[0]
+
+        url_user_obj = 'https://graph.facebook.com/v2.9/' + user_id + '?access_token=' + app_token
+        user_obj = json.loads(requests.get(url_user_obj).text)
+        user.username = user_obj['name']
+        user.save()
+
 
     return redirect("http://" + 'test.localhost.' + str(redirect_service) + ".campass.com.tw:8080")
 
