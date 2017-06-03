@@ -78,7 +78,7 @@ def user_get(request):
                 'major': user.major,
                 'grade': user.grade
             }
-        res = {'id': user.user_id, 'profile': profile}
+        res = {'id': user.user_id, 'name': user.username, 'profile': profile}
         return JsonResponse(res)
 
 
