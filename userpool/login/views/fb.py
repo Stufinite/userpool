@@ -3,54 +3,77 @@ from django.http import HttpResponse, JsonResponse
 
 from django.views.decorators.cache import never_cache
 
-import requests
-import json
 from login.models import FacebookUser
 
+import requests
+import json
+import redis
 
-def login(request):
+
+def get_user_id(key):
+    rc = redis.StrictRedis(host='localhost', port=6379, db=0)
+    return rc.get(key)
+
+
+def set_user_id(key, val):
+    rc = redis.StrictRedis(host='localhost', port=6379, db=0)
+    return rc.set(key, val)
+
+
+def del_user_id(key):
+    rc = redis.StrictRedis(host='localhost', port=6379, db=0)
+    return rc.delete(key)
+
+
+@never_cache
+def user_login(request):
     redirect_service = request.GET.get('redirect_service')
     client_id = "client_id=199021993947051"
     client_sec = "&client_secret=9d7f81f67f0df142040160fb975192a7"
-    redirect_uri = "&redirect_uri=" + \
-        "http://test.localhost.login.campass.com.tw:8080/fb?redirect_service=" + redirect_service
-    code = "&code=" + str(request.GET.get('code'))
 
-    url_user_token = "https://graph.facebook.com/v2.9/oauth/access_token?" + \
-        client_id + client_sec + redirect_uri + code
-    user_token = "input_token=" + \
-        json.loads(requests.get(url_user_token).text)['access_token']
-
-    url_app_token = "https://graph.facebook.com/v2.9/oauth/access_token?" + \
-        client_id + client_sec + "&grant_type=client_credentials"
-    app_token = "&access_token=" + \
-        json.loads(requests.get(url_app_token).text)['access_token']
-
-    url_user_id = "https://graph.facebook.com/debug_token?" + user_token + app_token
-    user_id = json.loads(requests.get(url_user_id).text)['data']['user_id']
-
-    import redis
-    redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
-    redis_get = redis_client.get(request.session.session_key)
-
-    if redis_get == None:
+    if not request.session.session_key:
+        request.session.save()
+    if get_user_id(request.session.session_key) == None:
         # Register or Login
-        redis_client.set(request.session.session_key, user_id)
-        user = FacebookUser.objects.get_or_create(user_id=user_id)[0]
+        redirect_uri = "&redirect_uri=" + \
+            "http://test.localhost.login.campass.com.tw:8080/fb?redirect_service=" + redirect_service
+        code = "&code=" + str(request.GET.get('code'))
 
-        url_user_obj = 'https://graph.facebook.com/v2.9/' + user_id + '?access_token=' + app_token
+        # get user access token
+        url_user_token = "https://graph.facebook.com/v2.9/oauth/access_token?" + \
+            client_id + client_sec + redirect_uri + code
+        user_token = "input_token=" + \
+            json.loads(requests.get(url_user_token).text)['access_token']
+
+        # get app access token
+        url_access_token = "https://graph.facebook.com/v2.9/oauth/access_token?" + \
+            client_id + client_sec + "&grant_type=client_credentials"
+        access_token = "&access_token=" + \
+            json.loads(requests.get(url_access_token).text)['access_token']
+
+        # get user id
+        url_user_id = "https://graph.facebook.com/debug_token?" + user_token + access_token
+        user_id = json.loads(requests.get(url_user_id).text)['data']['user_id']
+
+        # get user info
+        url_user_obj = 'https://graph.facebook.com/v2.9/' + \
+            user_id + '?access_token=' + access_token
         user_obj = json.loads(requests.get(url_user_obj).text)
+
+        # store user info
+        set_user_id(request.session.session_key, user_id)
+        user = FacebookUser.objects.get_or_create(user_id=user_id)[0]
         user.username = user_obj['name']
         user.save()
-
 
     return redirect("http://" + 'test.localhost.' + str(redirect_service) + ".campass.com.tw:8080")
 
 
-def logout(request):
-    import redis
-    redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
-    redis_client.delete(request.session.session_key)
+@never_cache
+def user_logout(request):
+    if not request.session.session_key:
+        request.session.save()
+    del_user_id(request.session.session_key)
 
     redirect_service = request.GET.get('redirect_service')
     return redirect("http://" + 'test.localhost.' + str(redirect_service) + ".campass.com.tw:8080")
@@ -61,14 +84,9 @@ def user_get(request):
     if not request.session.session_key:
         request.session.save()
 
-    import redis
-    redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
-    redis_get = redis_client.get(request.session.session_key)
-
-    if redis_get == None:
-        return HttpResponse(None)
-    else:
-        user = FacebookUser.objects.get(user_id=redis_get.decode('utf-8'))
+    user_id = get_user_id(request.session.session_key)
+    if user_id != None:
+        user = FacebookUser.objects.get(user_id=user_id.decode('utf-8'))
         if '' in (user.school, user.career, user.major):
             profile = None
         else:
@@ -78,25 +96,33 @@ def user_get(request):
                 'major': user.major,
                 'grade': user.grade
             }
-        res = {'id': user.user_id, 'name': user.username, 'profile': profile}
+        res = {'id': user.user_id, 'name': user.username,
+               'verify': request.session.session_key, 'profile': profile}
         return JsonResponse(res)
+    return HttpResponse(None)
 
 
-def user_edit(request, school, career, major, grade):
+@never_cache
+def user_verify(request, v_id, v_key):
+    user_id = get_user_id(v_key)
+    if user_id != None:
+        user = FacebookUser.objects.get(user_id=user_id.decode('utf-8'))
+        if user.user_id == v_id:
+            return HttpResponse('Ok')
+    return HttpResponse(None)
+
+
+@never_cache
+def user_edit(request, user_id, school, career, major, grade):
     if not request.session.session_key:
         request.session.save()
 
-    import redis
-    redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
-    redis_get = redis_client.get(request.session.session_key)
-
-    if redis_get == None:
-        return HttpResponse(None)
-    else:
-        user = FacebookUser.objects.get(user_id=redis_get.decode('utf-8'))
+    if user_id != None:
+        user = FacebookUser.objects.get(user_id=user_id)
         user.school = school
         user.career = career
         user.major = major
         user.grade = int(grade)
         user.save()
         return HttpResponse('Ok')
+    return HttpResponse(None)

@@ -28,8 +28,9 @@ urlpatterns += [
 
 # Facebook API
 urlpatterns += [
-    url(r'^fb/$', fb.login),
-    url(r'^fb/logout$', fb.logout),
+    url(r'^fb/$', fb.user_login),
+    url(r'^fb/logout$', fb.user_logout),
     url(r'^fb/user$', fb.user_get),
-    url(r'^fb/user/edit/(?P<school>\w*)/(?P<career>\w*)/(?P<major>\w*)/(?P<grade>\w*)$', fb.user_edit),
+    url(r'^fb/user/verify/(?P<v_id>\w*)/(?P<v_key>\w*)$', fb.user_verify),
+    url(r'^fb/user/edit/(?P<user_id>\w*)/(?P<school>\w*)/(?P<career>\w*)/(?P<major>\w*)/(?P<grade>\w*)$', fb.user_edit),
 ]
