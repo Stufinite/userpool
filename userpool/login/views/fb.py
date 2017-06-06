@@ -32,7 +32,7 @@ def del_user_id(key):
 def user_login(request):
     redirect_service = request.GET.get('redirect_service')
     client_id = "client_id=" + FB_APP_ID
-    client_sec = "&client_secret=" + FB_APP_ID
+    client_sec = "&client_secret=" + FB_APP_SEC
 
     if not request.session.session_key:
         request.session.save()
@@ -79,7 +79,7 @@ def user_logout(request):
     del_user_id(request.session.session_key)
 
     redirect_service = request.GET.get('redirect_service')
-    return redirect(UNIVERSAL_URL(str(redirect_service)))
+    return redirect(UNIVERSAL_URL.format(str(redirect_service)))
 
 
 @never_cache
