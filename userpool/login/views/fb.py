@@ -4,6 +4,9 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import never_cache
 
 from login.models import FacebookUser
+from userpool.settings import UNIVERSAL_URL as UNIVERSAL_URL
+from userpool.settings import FB_APP_ID as FB_APP_ID
+from userpool.settings import FB_APP_SEC as FB_APP_SEC
 
 import requests
 import json
@@ -28,15 +31,15 @@ def del_user_id(key):
 @never_cache
 def user_login(request):
     redirect_service = request.GET.get('redirect_service')
-    client_id = "client_id=199021993947051"
-    client_sec = "&client_secret=9d7f81f67f0df142040160fb975192a7"
+    client_id = "client_id=" + FB_APP_ID
+    client_sec = "&client_secret=" + FB_APP_ID
 
     if not request.session.session_key:
         request.session.save()
     if get_user_id(request.session.session_key) == None:
         # Register or Login
         redirect_uri = "&redirect_uri=" + \
-            "http://test.localhost.login.campass.com.tw:8080/fb?redirect_service=" + redirect_service
+            UNIVERSAL_URL.format('login') + "/fb?redirect_service=" + redirect_service
         code = "&code=" + str(request.GET.get('code'))
 
         # get user access token
@@ -66,7 +69,7 @@ def user_login(request):
         user.username = user_obj['name']
         user.save()
 
-    return redirect("http://" + 'test.localhost.' + str(redirect_service) + ".campass.com.tw:8080")
+    return redirect(UNIVERSAL_URL.format(str(redirect_service)))
 
 
 @never_cache
@@ -76,7 +79,7 @@ def user_logout(request):
     del_user_id(request.session.session_key)
 
     redirect_service = request.GET.get('redirect_service')
-    return redirect("http://" + 'test.localhost.' + str(redirect_service) + ".campass.com.tw:8080")
+    return redirect(UNIVERSAL_URL(str(redirect_service)))
 
 
 @never_cache

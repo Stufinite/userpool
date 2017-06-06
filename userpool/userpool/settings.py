@@ -17,12 +17,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Domain name
 DOMAIN = 'campass.com.tw'
+UNIVERSAL_URL = 'https://{}.campass.com.tw'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open(BASE_DIR + '/' + 'secret_key.txt') as f:
+with open(BASE_DIR + '/config/' + 'secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -143,7 +144,7 @@ STATICFILES_DIRS = [
 # Shared session
 
 SESSION_COOKIE_DOMAIN = '.' + DOMAIN
-with open(BASE_DIR + '/' + 'sessionid.txt') as f:
+with open(BASE_DIR + '/config/' + 'sessionid.txt') as f:
     SESSION_COOKIE_NAME = f.read().strip()
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
@@ -172,6 +173,14 @@ CORS_ALLOW_METHODS = (
     'GET',
 )
 
+# Facebook App
+
+with open(BASE_DIR + '/config/' + 'fb_app_id.txt') as f:
+    FB_APP_ID = f.read().strip()
+
+with open(BASE_DIR + '/config/' + 'fb_app_sec.txt') as f:
+    FB_APP_SEC = f.read().strip()
+
 # Dev
 
 if DEBUG:
@@ -179,3 +188,4 @@ if DEBUG:
     del SECURE_PROXY_SSL_HEADER
     SECURE_SSL_REDIRECT = False
     CORS_ORIGIN_ALLOW_ALL = True
+    UNIVERSAL_URL = 'http://test.localhost.{}.campass.com.tw:8080'
