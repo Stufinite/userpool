@@ -1,6 +1,6 @@
 # Project stuff
-userpool/userpool/settings_database.py
-userpool/login/migrations/*
+*/*/settings_database.py
+*/db.sqlite3
 db.sqlite3
 
 # virtualenv
