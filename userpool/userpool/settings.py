@@ -166,11 +166,12 @@ SECURE_SSL_REDIRECT = True
 # CORS header
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    'www.' + DOMAIN,
-    'localhost',
-    '127.0.0.1'
-)
+# CORS_ORIGIN_WHITELIST = (
+#     'www.' + DOMAIN,
+#     'localhost',
+#     '127.0.0.1'
+# )
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = (
     'GET',
 )
