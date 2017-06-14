@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Domain name
 DOMAIN = 'campass.com.tw'
-UNIVERSAL_URL = 'https://{}.campass.com.tw'
+UNIVERSAL_URL = 'http://{}.campass.com.tw'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
